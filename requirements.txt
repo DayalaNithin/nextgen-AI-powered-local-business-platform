@@ -1,0 +1,7 @@
+Django>=5.0,<6.0
+djangorestframework>=3.15.2,<3.16
+PyJWT>=2.9.0,<3.0
+textblob>=0.17.1
+selenium>=4.0.0
+swiftshadow>=1.0.0
+

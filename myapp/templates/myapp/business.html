@@ -1,0 +1,265 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Business Setup - LocalBiz AI</title>
+    <script src="{% static 'config/config.js' %}"></script>
+    <script src="{% static 'js/api.js' %}"></script>
+    <script src="{% static 'js/utils.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/business.css' %}"/>
+  </head>
+  <body class="dashboard-body">
+    <!-- Navigation Bar -->
+    <nav class="top-nav">
+      <div class="nav-container">
+        <div class="nav-left">
+          <button class="hamburger-menu" id="hamburgerMenu" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <button class="export-icon-btn" id="exportBtn" aria-label="Export data" title="Export">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="nav-brand">
+          <h2><a href="{% url 'index' %}" style="text-decoration: none; color: inherit;">LocalBiz AI</a></h2>
+        </div>
+        
+        <!-- Show auth buttons if not logged in, profile menu if logged in -->
+        {% if user.is_authenticated %}
+        <div class="profile-menu" id="profileMenu">
+          <button class="profile-trigger" id="profileTrigger" aria-label="Profile menu">
+            <div class="profile-avatar">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
+              </svg>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" class="dropdown-arrow">
+              <path d="M4.427 9.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 9H4.604a.25.25 0 00-.177.427z"/>
+            </svg>
+          </button>
+          <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-dropdown-header">
+              <div class="profile-avatar-large">
+                <svg width="32" height="32" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
+                </svg>
+              </div>
+                <div>
+                  <p class="profile-name">{{ user.get_full_name|default:user.username }}</p>
+                  <p class="profile-email">{{ user.email }}</p>
+                </div>
+            </div>
+            <div class="profile-dropdown-divider"></div>
+            <a href="{% url 'index' %}" class="dropdown-item">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+              </svg>
+              Home
+            </a>
+            <a href="{% url 'dashboard' %}" class="dropdown-item">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+              </svg>
+              Dashboard
+            </a>
+            <a href="{% url 'business' %}" class="dropdown-item">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"/>
+              </svg>
+              Business
+            </a>
+            <a href="#" class="dropdown-item">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path fill-rule="evenodd" d="M1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0zM8 0a8 8 0 100 16A8 8 0 008 0zm.5 4.75a.75.75 0 00-1.5 0v3.5a.75.75 0 00.75.75h2.5a.75.75 0 000-1.5H8.5V4.75z"/>
+              </svg>
+              Settings
+            </a>
+            <div class="dropdown-item theme-toggle">
+              <div class="theme-toggle-copy">
+                <p>Theme</p>
+                <span id="themeToggleLabel">Dark</span>
+              </div>
+              <label class="theme-switch" aria-label="Toggle color theme">
+                <input type="checkbox" id="themeToggle" />
+                <span class="slider"></span>
+              </label>
+            </div>
+            <a href="#" class="dropdown-item">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path fill-rule="evenodd" d="M8 1a7 7 0 100 14A7 7 0 008 1zM3 8a5 5 0 1110 0A5 5 0 013 8zm6-4.5V9h2.5a.5.5 0 010 1h-6a.5.5 0 01-.5-.5v-6a.5.5 0 011 0z"/>
+              </svg>
+              Help
+            </a>
+            <div class="profile-dropdown-divider"></div>
+            <a href="{% url 'logout' %}" class="dropdown-item">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 12.5a.5.5 0 01-.5.5h-8a.5.5 0 01-.5-.5v-9a.5.5 0 01.5-.5h8a.5.5 0 01.5.5v2a.5.5 0 001 0v-2A1.5 1.5 0 009.5 2h-8A1.5 1.5 0 000 3.5v9A1.5 1.5 0 001.5 14h8a1.5 1.5 0 001.5-1.5v-2a.5.5 0 00-1 0v2z"/>
+                <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 000-.708l-3-3a.5.5 0 00-.708.708L14.293 7.5H5.5a.5.5 0 000 1h8.793l-2.147 2.146a.5.5 0 00.708.708l3-3z"/>
+              </svg>
+              Sign out
+            </a>
+          </div>
+        </div>
+        {% else %}
+        <div class="auth-buttons" id="authButtons">
+          <a href="{% url 'login' %}" class="auth-btn sign-in-btn">Sign In</a>
+          <a href="{% url 'registration' %}" class="auth-btn sign-up-btn">Sign Up</a>
+        </div>
+        {% endif %}
+      </div>
+    </nav>
+
+    <!-- Sidebar Menu -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3>Menu</h3>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="{% url 'index' %}" class="sidebar-item">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+          </svg>
+          <span>Home</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Main Content -->
+    <div class="dashboard-shell">
+      <div class="business-container">
+        <section class="form-section">
+          <div class="form-header">
+            <h2>Business Information</h2>
+            <p>Enter your business details to begin</p>
+          </div>
+          
+          <form class="business-form" id="businessForm" method="POST" action="{% url 'business' %}">
+            {% csrf_token %}
+            {% if form.errors %}
+              <div class="form-errors" style="background: #fee; border: 1px solid #fcc; padding: 12px; border-radius: 6px; margin-bottom: 20px; color: #c33;">
+                <strong>Please correct the following errors:</strong>
+                <ul style="margin: 8px 0 0 20px;">
+                  {% for field in form %}
+                    {% for error in field.errors %}
+                      <li>{{ field.label }}: {{ error }}</li>
+                    {% endfor %}
+                  {% endfor %}
+                  {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            {% endif %}
+            {% if messages %}
+              {% for message in messages %}
+                <div class="form-message" style="background: {% if message.tags == 'success' %}#dfd{% else %}#fee{% endif %}; border: 1px solid {% if message.tags == 'success' %}#9d9{% else %}#fcc{% endif %}; padding: 12px; border-radius: 6px; margin-bottom: 20px; color: {% if message.tags == 'success' %}#3a3{% else %}#c33{% endif %};">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="name">Business Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  class="form-control"
+                  placeholder="Enter your Business name"
+                  value="{{ form.name.value|default_if_none:'' }}"
+                  required
+                />
+                {% if form.name.errors %}
+                  <span class="field-error" style="color: #c33; font-size: 0.875rem; margin-top: 4px; display: block;">{{ form.name.errors.0 }}</span>
+                {% endif %}
+              </div>
+
+              <div class="form-group">
+                <label for="location">Location</label>
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  class="form-control"
+                  placeholder="Enter your business location"
+                  value="{{ form.location.value|default_if_none:'' }}"
+                  required
+                />
+                {% if form.location.errors %}
+                  <span class="field-error" style="color: #c33; font-size: 0.875rem; margin-top: 4px; display: block;">{{ form.location.errors.0 }}</span>
+                {% endif %}
+              </div>
+
+              <div class="form-group">
+                <label for="google_maps_url">Website or Maps URL</label>
+                <input
+                  type="url"
+                  id="google_maps_url"
+                  name="google_maps_url"
+                  class="form-control"
+                  placeholder="https://yourbusiness.com"
+                  value="{{ form.google_maps_url.value|default_if_none:'' }}"
+                />
+                {% if form.google_maps_url.errors %}
+                  <span class="field-error" style="color: #c33; font-size: 0.875rem; margin-top: 4px; display: block;">{{ form.google_maps_url.errors.0 }}</span>
+                {% endif %}
+              </div>
+
+              <div class="form-group">
+                <label for="category">Business Type</label>
+                <select id="category" name="category" class="form-control" required>
+                  <option value="">Select business type</option>
+                  <option value="restaurant" {% if form.category.value == 'restaurant' %}selected{% endif %}>Restaurant</option>
+                  <option value="retail" {% if form.category.value == 'retail' %}selected{% endif %}>Retail</option>
+                  <option value="service" {% if form.category.value == 'service' %}selected{% endif %}>Service</option>
+                  <option value="hotel" {% if form.category.value == 'hotel' %}selected{% endif %}>Hotel</option>
+                  <option value="other" {% if form.category.value == 'other' %}selected{% endif %}>Other</option>
+                </select>
+                {% if form.category.errors %}
+                  <span class="field-error" style="color: #c33; font-size: 0.875rem; margin-top: 4px; display: block;">{{ form.category.errors.0 }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-submit">Submit</button>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+    <script src="{% static 'js/dashboard.js' %}" defer></script>
+    <script src="{% static 'js/business.js' %}" defer></script>
+    <script>
+      // Show/hide auth buttons vs profile menu based on login status
+      document.addEventListener('DOMContentLoaded', function() {
+        const authButtons = document.getElementById('authButtons');
+        const profileMenu = document.getElementById('profileMenu');
+        
+        if (window.apiUtils && window.apiUtils.getAuthToken()) {
+          // User is logged in
+          if (authButtons) authButtons.style.display = 'none';
+          if (profileMenu) profileMenu.style.display = 'block';
+        } else {
+          // User is not logged in
+          if (authButtons) authButtons.style.display = 'flex';
+          if (profileMenu) profileMenu.style.display = 'none';
+        }
+      });
+    </script>
+  </body>
+</html>
+

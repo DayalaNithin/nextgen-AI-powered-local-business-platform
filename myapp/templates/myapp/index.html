@@ -1,0 +1,278 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LocalBiz AI - Business Intelligence Platform</title>
+    <script src="{% static 'config/config.js' %}"></script>
+    <script src="{% static 'js/api.js' %}"></script>
+    <script src="{% static 'js/utils.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}"/>
+    <script src="{% static 'js/dashboard.js' %}" defer></script>
+  </head>
+  <body class="dashboard-body">
+    <!-- Navigation Bar -->
+    <nav class="top-nav">
+      <div class="nav-container">
+        <div class="nav-left">
+          <button class="hamburger-menu" id="hamburgerMenu" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <button class="export-icon-btn" id="exportBtn" aria-label="Export data" title="Export">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="nav-brand">
+          <h2><a href="{% url 'index' %}" style="text-decoration: none; color: inherit;">LocalBiz AI</a></h2>
+        </div>
+        
+        <!-- Show auth buttons if not logged in, profile menu if logged in -->
+        {% if user.is_authenticated %}
+        <div class="profile-menu" id="profileMenu">
+          <button class="profile-trigger" id="profileTrigger" aria-label="Profile menu">
+            <div class="profile-avatar">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
+              </svg>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" class="dropdown-arrow">
+              <path d="M4.427 9.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 9H4.604a.25.25 0 00-.177.427z"/>
+            </svg>
+          </button>
+          <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-dropdown-header">
+              <div class="profile-avatar-large">
+                <svg width="32" height="32" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
+                </svg>
+              </div>
+                <div>
+                  <p class="profile-name">{{ user.get_full_name|default:user.username }}</p>
+                  <p class="profile-email">{{ user.email }}</p>
+                </div>
+            </div>
+            <div class="profile-dropdown-divider"></div>
+            <a href="{% url 'index' %}" class="dropdown-item">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+              </svg>
+              Home
+            </a>
+            <a href="{% url 'dashboard' %}" class="dropdown-item">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+              </svg>
+              Dashboard
+            </a>
+            <a href="{% url 'business' %}" class="dropdown-item">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"/>
+              </svg>
+              Business
+            </a>
+            <a href="#" class="dropdown-item">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path fill-rule="evenodd" d="M1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0zM8 0a8 8 0 100 16A8 8 0 008 0zm.5 4.75a.75.75 0 00-1.5 0v3.5a.75.75 0 00.75.75h2.5a.75.75 0 000-1.5H8.5V4.75z"/>
+              </svg>
+              Settings
+            </a>
+            <div class="dropdown-item theme-toggle">
+              <div class="theme-toggle-copy">
+                <p>Theme</p>
+                <span id="themeToggleLabel">Dark</span>
+              </div>
+              <label class="theme-switch" aria-label="Toggle color theme">
+                <input type="checkbox" id="themeToggle" />
+                <span class="slider"></span>
+              </label>
+            </div>
+            <a href="#" class="dropdown-item">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path fill-rule="evenodd" d="M8 1a7 7 0 100 14A7 7 0 008 1zM3 8a5 5 0 1110 0A5 5 0 013 8zm6-4.5V9h2.5a.5.5 0 010 1h-6a.5.5 0 01-.5-.5v-6a.5.5 0 011 0z"/>
+              </svg>
+              Help
+            </a>
+            <div class="profile-dropdown-divider"></div>
+            <a href="{% url 'logout' %}" class="dropdown-item">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 12.5a.5.5 0 01-.5.5h-8a.5.5 0 01-.5-.5v-9a.5.5 0 01.5-.5h8a.5.5 0 01.5.5v2a.5.5 0 001 0v-2A1.5 1.5 0 009.5 2h-8A1.5 1.5 0 000 3.5v9A1.5 1.5 0 001.5 14h8a1.5 1.5 0 001.5-1.5v-2a.5.5 0 00-1 0v2z"/>
+                <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 000-.708l-3-3a.5.5 0 00-.708.708L14.293 7.5H5.5a.5.5 0 000 1h8.793l-2.147 2.146a.5.5 0 00.708.708l3-3z"/>
+              </svg>
+              Sign out
+            </a>
+          </div>
+        </div>
+        {% else %}
+        <div class="auth-buttons" id="authButtons">
+          <a href="{% url 'login' %}" class="auth-btn sign-in-btn">Sign In</a>
+          <a href="{% url 'registration' %}" class="auth-btn sign-up-btn">Sign Up</a>
+        </div>
+        {% endif %}
+      </div>
+    </nav>
+
+    <!-- Sidebar Menu -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3>Menu</h3>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="{% url 'index' %}" class="sidebar-item active">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+          </svg>
+          <span>Home</span>
+        </a>
+        <a href="{% url 'dashboard' %}" class="sidebar-item">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="{% url 'reviews' %}" class="sidebar-item">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"/>
+          </svg>
+          <span>Reviews</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Main Content -->
+    <div class="dashboard-shell">
+      <header class="dashboard-header">
+        <div>
+          <p class="eyebrow">AI-Powered Business Intelligence</p>
+          <h1>Transform Customer Reviews Into Actionable Insights</h1>
+          <p class="lede">
+            Local businesses receive thousands of customer reviews across Google Maps, Instagram, and social media, 
+            but lack the time to interpret this feedback. Our AI platform automatically collects, analyzes, and 
+            generates clear insights from customer reviews, helping you make informed decisions and enhance customer satisfaction.
+          </p>
+        </div>
+      </header>
+
+      <section class="stat-grid">
+        <article class="stat-card">
+          <p class="label">Reviews Analyzed</p>
+          <p class="value">12,847</p>
+          <p class="delta positive">+24% This Month</p>
+        </article>
+        <article class="stat-card">
+          <p class="label">Businesses Served</p>
+          <p class="value">342</p>
+          <p class="delta positive">+18 New</p>
+        </article>
+        <article class="stat-card">
+          <p class="label">Avg. Response Time</p>
+          <p class="value">2.3h</p>
+          <p class="delta positive">-45% Faster</p>
+        </article>
+        <article class="stat-card">
+          <p class="label">Customer Satisfaction</p>
+          <p class="value">4.7★</p>
+          <p class="delta positive">+0.3 Points</p>
+        </article>
+      </section>
+
+      <section class="split-grid">
+        <article class="chart-card">
+          <header>
+            <div>
+              <h3>Key Features</h3>
+              <p>What makes us different</p>
+            </div>
+          </header>
+          <div class="quick-actions">
+            <div class="feature-item">
+              <svg width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+                <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+              </svg>
+              <div>
+                <h4>Multi-Platform Collection</h4>
+                <p>Automatically gather reviews from Google Maps, Instagram, Yelp, and more</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <svg width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+              </svg>
+              <div>
+                <h4>AI-Powered Analysis</h4>
+                <p>Advanced sentiment analysis and topic extraction from unstructured feedback</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <svg width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+              </svg>
+              <div>
+                <h4>Actionable Insights</h4>
+                <p>Get clear recommendations to improve services and respond to issues quickly</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="chart-card">
+          <header>
+            <div>
+              <h3>How It Works</h3>
+              <p>Simple steps to better business intelligence</p>
+            </div>
+          </header>
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="activity-icon positive">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"/>
+                </svg>
+              </div>
+              <div class="activity-content">
+                <p class="activity-text">Connect Your Business</p>
+                <p class="activity-time">Link your Google Maps, Instagram, and social media accounts</p>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon neutral">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+                  <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"/>
+                </svg>
+              </div>
+              <div class="activity-content">
+                <p class="activity-text">AI Analyzes Reviews</p>
+                <p class="activity-time">Our AI processes sentiment, topics, and trends automatically</p>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon positive">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z"/>
+                </svg>
+              </div>
+              <div class="activity-content">
+                <p class="activity-text">Get Insights & Act</p>
+                <p class="activity-time">Receive clear reports and recommendations to improve your business</p>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+    </div>
+    <script src="{% static 'js/auth.js' %}" defer></script>
+  </body>
+</html>
+

@@ -1,0 +1,636 @@
+/* Navigation Bar Styles */
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(248, 250, 252, 0.1);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+}
+
+.nav-container {
+  max-width: 1120px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* make container positioned so brand can be centered absolutely */
+.nav-container {
+  position: relative;
+}
+
+/* left group of controls */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* center the brand visually */
+.nav-brand {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: auto;
+  z-index: 1;
+  white-space: nowrap;
+  max-width: 300px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.nav-brand a {
+  pointer-events: auto;
+}
+
+.nav-brand h2 {
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Pin auth/profile to the right so they're always visible */
+.auth-buttons,
+.profile-menu {
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Responsive: on small screens place the brand inline (left) so it doesn't overlap controls */
+@media (max-width: 640px) {
+  .nav-brand {
+    position: static;
+    transform: none;
+    left: auto;
+    margin-left: 0.5rem;
+    pointer-events: auto;
+  }
+
+  .nav-container {
+    justify-content: space-between;
+  }
+
+  /* On small screens, move auth/profile to the right inline so nothing overlaps */
+  .auth-buttons,
+  .profile-menu {
+    position: static;
+    transform: none;
+    right: auto;
+    top: auto;
+    margin-left: auto;
+  }
+}
+
+/* Hamburger Menu Button */
+.hamburger-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+}
+
+.hamburger-menu:hover {
+  background: rgba(148, 163, 184, 0.1);
+}
+
+.hamburger-menu span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--slate-100, #f1f5f9);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburger-menu.active span:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger-menu.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-menu.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Export Icon Button */
+.export-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+  width: 40px;
+  height: 40px;
+  color: var(--slate-100, #f1f5f9);
+}
+
+.export-icon-btn:hover {
+  background: rgba(148, 163, 184, 0.1);
+}
+
+body.theme-light .export-icon-btn {
+  color: #0f172a;
+}
+
+body.theme-light .export-icon-btn:hover {
+  background: rgba(15, 23, 42, 0.08);
+}
+
+/* Nav Brand */
+.nav-brand h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--slate-100, #f1f5f9);
+  letter-spacing: -0.01em;
+}
+
+/* Profile Menu */
+.profile-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid rgba(248, 250, 252, 0.1);
+  border-radius: 24px;
+  padding: 4px 8px 4px 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.profile-trigger:hover {
+  border-color: rgba(248, 250, 252, 0.2);
+  background: rgba(148, 163, 184, 0.1);
+}
+
+.profile-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(56, 189, 248, 0.2);
+  border: 2px solid rgba(56, 189, 248, 0.3);
+  color: var(--sky-400, #38bdf8);
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 280px;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(248, 250, 252, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.2s ease;
+  z-index: 1001;
+  overflow: hidden;
+}
+
+.profile-menu.active .profile-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.profile-dropdown-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid rgba(248, 250, 252, 0.1);
+}
+
+.profile-avatar-large {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(56, 189, 248, 0.2);
+  border: 2px solid rgba(56, 189, 248, 0.3);
+  color: var(--sky-400, #38bdf8);
+  flex-shrink: 0;
+}
+
+.profile-name {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--slate-100, #f1f5f9);
+}
+
+.profile-email {
+  margin: 2px 0 0 0;
+  font-size: 0.85rem;
+  color: var(--slate-400, #94a3b8);
+}
+
+.profile-dropdown-divider {
+  height: 1px;
+  background: rgba(248, 250, 252, 0.1);
+  margin: 8px 0;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  color: var(--slate-100, #f1f5f9);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background: rgba(148, 163, 184, 0.1);
+}
+
+.theme-toggle {
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.theme-toggle-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.theme-toggle-copy p {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--slate-400, #94a3b8);
+}
+
+.theme-toggle-copy span {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--slate-100, #f1f5f9);
+}
+
+.theme-switch {
+  position: relative;
+  width: 46px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-switch .slider {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.4);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theme-switch .slider::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #fff;
+  top: 50%;
+  left: 4px;
+  transform: translate(0, -50%);
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.35);
+  transition: all 0.2s ease;
+}
+
+.theme-switch input:checked + .slider {
+  background: linear-gradient(120deg, #38bdf8, #6366f1);
+}
+
+.theme-switch input:checked + .slider::after {
+  transform: translate(18px, -50%);
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 280px;
+  height: calc(100vh - 60px);
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(248, 250, 252, 0.1);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: 999;
+  overflow-y: auto;
+}
+
+.sidebar.active {
+  transform: translateX(0);
+}
+
+.sidebar-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(248, 250, 252, 0.1);
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--slate-100, #f1f5f9);
+}
+
+.sidebar-nav {
+  padding: 1rem 0;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 1.5rem;
+  color: var(--slate-100, #f1f5f9);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.sidebar-item:hover {
+  background: rgba(148, 163, 184, 0.1);
+  border-left-color: var(--sky-400, #38bdf8);
+}
+
+.sidebar-item.active {
+  background: rgba(56, 189, 248, 0.1);
+  border-left-color: var(--sky-400, #38bdf8);
+  color: var(--sky-400, #38bdf8);
+}
+
+/* Sidebar Overlay */
+.sidebar-overlay {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(2, 6, 23, 0.6);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 998;
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Auth Buttons */
+.auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.auth-btn {
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.sign-in-btn {
+  color: var(--slate-100, #f1f5f9);
+  background: transparent;
+  border-color: rgba(248, 250, 252, 0.2);
+}
+
+.sign-in-btn:hover {
+  background: rgba(148, 163, 184, 0.1);
+  border-color: rgba(248, 250, 252, 0.3);
+}
+
+.sign-up-btn {
+  color: var(--slate-900, #0f172a);
+  background: var(--sky-400, #38bdf8);
+  border-color: var(--sky-400, #38bdf8);
+}
+
+.sign-up-btn:hover {
+  background: var(--sky-500, #0ea5e9);
+  border-color: var(--sky-500, #0ea5e9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+}
+
+/* Dashboard Shell */
+.dashboard-body {
+  min-height: 100vh;
+  padding: 0 1.5rem 3rem;
+  display: flex;
+  justify-content: center;
+  padding-top: 50px; /* Cleaner, minimal spacing */
+}
+
+
+.dashboard-shell {
+  width: 100%;
+  max-width: var(--shell-max-width);
+  padding-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  align-items: stretch;
+}
+
+/* Grid Layouts */
+.stat-grid,
+.chart-grid,
+.split-grid {
+  display: grid;
+  gap: 1.75rem;
+}
+
+.stat-grid {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.chart-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.chart-grid .large {
+  grid-column: span 2;
+}
+
+@media (max-width: 1024px) {
+  .chart-grid .large {
+    grid-column: span 1;
+  }
+}
+
+.split-grid {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+/* Light theme overrides for layout - Simple black and white only */
+body.theme-light .top-nav {
+  background: #ffffff;
+  border-bottom: 1px solid #000000;
+}
+
+body.theme-light .sidebar {
+  background: #ffffff;
+  border-right: 1px solid #000000;
+}
+
+body.theme-light .sidebar-item {
+  color: #000000;
+}
+
+body.theme-light .sidebar-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+body.theme-light .sidebar-item.active {
+  background: rgba(0, 0, 0, 0.1);
+  color: #000000;
+  border-left-color: #000000;
+}
+
+body.theme-light .sign-in-btn {
+  color: #000000;
+  border-color: #000000;
+}
+
+body.theme-light .sign-in-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+body.theme-light .sign-up-btn {
+  background: #000000;
+  color: #ffffff;
+  border-color: #000000;
+}
+
+body.theme-light .sign-up-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+body.theme-light .nav-brand h2 {
+  color: #000000;
+}
+
+body.theme-light .hamburger-menu span {
+  background: #000000;
+}
+
+body.theme-light .export-icon-btn {
+  color: #000000;
+}
+
+body.theme-light .export-icon-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+body.theme-light .profile-avatar,
+body.theme-light .profile-avatar-large {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.2);
+  color: #000000;
+}
+
+body.theme-light .profile-dropdown {
+  background: #ffffff;
+  border: 1px solid #000000;
+}
+
+body.theme-light .profile-name,
+body.theme-light .profile-email {
+  color: #000000;
+}
+
+body.theme-light .dropdown-item {
+  color: #000000;
+}
+
+body.theme-light .dropdown-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+body.theme-light .profile-dropdown-divider {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .nav-brand h2 {
+    font-size: 1rem;
+  }
+
+  .sidebar {
+    width: 260px;
+  }
+}
+

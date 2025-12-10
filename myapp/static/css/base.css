@@ -1,0 +1,62 @@
+:root {
+  --shell-max-width: 1120px;
+  --card-rounded: 1.75rem;
+  --slate-950: #020617;
+  --slate-900: #0f172a;
+  --slate-800: #1e293b;
+  --slate-400: #94a3b8;
+  --slate-100: #f1f5f9;
+  --emerald-300: #6ee7b7;
+  --rose-300: #fda4af;
+  --sky-500: #0ea5e9;
+  --sky-400: #38bdf8;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: radial-gradient(circle at top, #0f172a 0%, #020617 55%, #010314 100%);
+  color: var(--slate-100);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Light theme overrides - Simple black and white only */
+body.theme-light {
+  background: #ffffff;
+  color: #000000;
+}
+
+body.theme-light h1,
+body.theme-light h2,
+body.theme-light h3,
+body.theme-light h4,
+body.theme-light .stat-card .value {
+  color: #000000;
+}
+
+body.theme-light .eyebrow {
+  color: #000000;
+  opacity: 0.6;
+}
+
+body.theme-light .lede,
+body.theme-light .chart-card header p,
+body.theme-light p {
+  color: #000000;
+  opacity: 0.8;
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 0 1rem 2rem;
+  }
+}
+
